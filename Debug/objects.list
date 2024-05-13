@@ -37,3 +37,6 @@
 "./Middlewares/FreeRTOS/stream_buffer.o"
 "./Middlewares/FreeRTOS/tasks.o"
 "./Middlewares/FreeRTOS/timers.o"
+"./src/tasks/main_task.o"
+"./src/tasks/pc_task.o"
+"./src/tasks/read_task.o"

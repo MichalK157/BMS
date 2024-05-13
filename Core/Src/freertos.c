@@ -25,7 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "tasks/read_task.h"
+#include "tasks/pc_task.h"
+#include "tasks/main_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,18 +49,20 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-osThreadId mainTaskHandle;
+osThreadId defalutTaskHandle;
 osThreadId readTaskHandle;
 osThreadId PcCommunicationHandle;
+osThreadId mainTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
 /* USER CODE END FunctionPrototypes */
 
-void mainFun(void const * argument);
+void defalutTaskFun(void const * argument);
 extern void readFun(void const * argument);
 extern void PcCommunicationFun(void const * argument);
+extern void mainTaskFun(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -90,8 +94,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * File Name          :
-  * Description        :
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
   ******************************************************************************
   * @attention
   *
@@ -115,22 +119,22 @@ void MX_FREERTOS_Init(void) {
   */
 }
 
-/* USER CODE BEGIN Header_mainFun */
+/* USER CODE BEGIN Header_defalutTaskFun */
 /**
-  * @brief  Function implementing the mainTask thread.
+  * @brief  Function implementing the defalutTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_mainFun */
-__weak void mainFun(void const * argument)
+/* USER CODE END Header_defalutTaskFun */
+void defalutTaskFun(void const * argument)
 {
-  /* USER CODE BEGIN mainFun */
+  /* USER CODE BEGIN defalutTaskFun */
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1000);
   }
-  /* USER CODE END mainFun */
+  /* USER CODE END defalutTaskFun */
 }
 
 /* Private application code --------------------------------------------------*/
