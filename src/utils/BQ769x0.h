@@ -198,6 +198,6 @@ typedef struct {
 
 uint8_t read_register(uint8_t address, BQ769_Register register);
 void write_register(uint8_t address, BQ769_Register register, uint8_t value);
-void get_configuration();
+void get_configuration(uint8_t address);
 
 #endif /* UTILS_BQ769X0_H_ */
