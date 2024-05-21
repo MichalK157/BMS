@@ -16,14 +16,18 @@ set(UI_FILES
    ${CMAKE_CURRENT_SOURCE_DIR}/bms_api.ui
 )
 
+set(CMAKE_AUTOMOC ON)
+
+qt5_wrap_cpp(MOC_SOURCES q_main_window.h q_communication.h)
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 
-include_directories(src)
+include_directories(src proto)
 
 set(HEADERS_API
     src/SerialPort.h
     src/q_main_window.h
     src/q_communication.h
+    proto/protocol.h
 )
 
 set(FILES_API

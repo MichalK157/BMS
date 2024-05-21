@@ -1,0 +1,6 @@
+
+typedef enum
+{
+    MSG_ID_STATE = 0x53544154,
+    MSG_ID_BATTERY = 0x42415454
+} MSG_ID;

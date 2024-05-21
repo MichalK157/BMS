@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+bms_api
+src/test
+API/proto/*
+API/build/*
+*.launch
+Debug/*

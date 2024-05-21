@@ -11,11 +11,11 @@ SerialPort::SerialPort(const std::string& portName, int baudRate)
 }
 
 SerialPort::~SerialPort() {
-    close();
+
 }
 
 bool SerialPort::open() {
-    fileDescriptor = ::open(portName.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
+    fileDescriptor = ::open(portName.c_str(), O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     if (fileDescriptor < 0) {
         std::cerr << "Error opening " << portName << ": " << strerror(errno) << std::endl;
         return false;
@@ -61,7 +61,7 @@ void SerialPort::close() {
     }
 }
 
-int SerialPort::readData(uint8_t* buffer, unsigned int size) {
+int SerialPort::readData(char* buffer, unsigned int size) {
     if (!openFlag) return -1;
     return ::read(fileDescriptor, buffer, size);
 }

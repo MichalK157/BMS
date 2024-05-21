@@ -12,7 +12,7 @@ public:
 
     bool open();
     void close();
-    int readData(uint8_t* buffer, unsigned int size);
+    int readData(char* buffer, unsigned int size);
     bool writeData(const char* buffer, unsigned int size);
     bool isOpen() const;
 
