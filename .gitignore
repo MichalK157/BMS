@@ -52,7 +52,7 @@ Mkfile.old
 dkms.conf
 
 bms_api
-src/test
+API/src/test
 API/proto/*
 API/build/*
 *.launch
