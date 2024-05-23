@@ -171,10 +171,14 @@ typedef enum {
 
 typedef struct {
     uint8_t sys_stat;
+    uint8_t cellbal_1;
+    uint8_t cellbal_2;
+    uint8_t cellbal_3;
     uint8_t sys_ctrl1;
     uint8_t sys_ctrl2;
     uint8_t protect1;
     uint8_t protect2;
+    uint8_t protect3;
     uint8_t ov_trip;
     uint8_t uv_trip;
     uint8_t cc_cfg;
