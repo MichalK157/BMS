@@ -11,10 +11,14 @@
 
 // Addresses of registers in the BQ769 circuit
 #define BQ769_REG_SYS_STAT_ADDR     0x0000 // System Status Register
+#define BQ769_REG_CELLBAL_1_ADDR    0x0001 // Cell config 1 too 5 
+#define BQ769_REG_CELLBAL_2_ADDR    0x0002 // Cell config 6 too 10
+#define BQ769_REG_CELLBAL_3_ADDR    0x0003 // Cell config 11 too 15
 #define BQ769_REG_SYS_CTRL1_ADDR    0x0004 // System Control Register 1
 #define BQ769_REG_SYS_CTRL2_ADDR    0x0005 // System Control Register 2
 #define BQ769_REG_PROTECT1_ADDR     0x0006 // Protection Control Register 1
 #define BQ769_REG_PROTECT2_ADDR     0x0007 // Protection Control Register 2
+#define BQ769_REG_PROTECT3_ADDR     0x0008 // Protection Control Register 3
 #define BQ769_REG_OV_TRIP_ADDR      0x0009 // Overvoltage Trip Threshold Register
 #define BQ769_REG_UV_TRIP_ADDR      0x000A // Undervoltage Trip Threshold Register
 #define BQ769_REG_CC_CFG_ADDR       0x000C // Coulomb Counter Configuration Register
@@ -85,8 +89,12 @@ typedef enum {
     BQ769_REG_SYS_STAT = BQ769_REG_SYS_STAT_ADDR,
     BQ769_REG_SYS_CTRL1 = BQ769_REG_SYS_CTRL1_ADDR,
     BQ769_REG_SYS_CTRL2 = BQ769_REG_SYS_CTRL2_ADDR,
-    BQ769_REG_PROTECT1 = BQ769_REG_PROTECT1_ADDR,
-    BQ769_REG_PROTECT2 = BQ769_REG_PROTECT2_ADDR,
+    BQ769_REG_CELLBAL_1 = BQ769_REG_CELLBAL_1_ADDR, 
+    BQ769_REG_CELLBAL_2 = BQ769_REG_CELLBAL_2_ADDR, 
+    BQ769_REG_CELLBAL_3 = BQ769_REG_CELLBAL_3_ADDR, 
+    BQ769_REG_PROTECT_1 = BQ769_REG_PROTECT1_ADDR,
+    BQ769_REG_PROTECT_2 = BQ769_REG_PROTECT2_ADDR,
+    BQ769_REG_PROTECT_3 = BQ769_REG_PROTECT3_ADDR,
     BQ769_REG_OV_TRIP = BQ769_REG_OV_TRIP_ADDR,
     BQ769_REG_UV_TRIP = BQ769_REG_UV_TRIP_ADDR,
     BQ769_REG_CC_CFG = BQ769_REG_CC_CFG_ADDR,
