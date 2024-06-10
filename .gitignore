@@ -57,3 +57,6 @@ API/proto/*
 API/build/*
 *.launch
 Debug/*
+.vscode/*
+settings/*
+

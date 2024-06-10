@@ -21,37 +21,39 @@
 #define BQ769_REG_PROTECT3_ADDR     0x0008 // Protection Control Register 3
 #define BQ769_REG_OV_TRIP_ADDR      0x0009 // Overvoltage Trip Threshold Register
 #define BQ769_REG_UV_TRIP_ADDR      0x000A // Undervoltage Trip Threshold Register
-#define BQ769_REG_CC_CFG_ADDR       0x000C // Coulomb Counter Configuration Register
-#define BQ769_REG_VC1_HI_ADDR       0x000D // Voltage Cell 1 High Byte Register
-#define BQ769_REG_VC1_LO_ADDR       0x000E // Voltage Cell 1 Low Byte Register
-#define BQ769_REG_VC2_HI_ADDR       0x0010 // Voltage Cell 2 High Byte Register
-#define BQ769_REG_VC2_LO_ADDR       0x0011 // Voltage Cell 2 Low Byte Register
-#define BQ769_REG_VC3_HI_ADDR       0x0012 // Voltage Cell 3 High Byte Register
-#define BQ769_REG_VC3_LO_ADDR       0x0013 // Voltage Cell 3 Low Byte Register
-#define BQ769_REG_VC4_HI_ADDR       0x0014 // Voltage Cell 4 High Byte Register
-#define BQ769_REG_VC4_LO_ADDR       0x0015 // Voltage Cell 4 Low Byte Register
-#define BQ769_REG_VC5_HI_ADDR       0x0016 // Voltage Cell 5 High Byte Register
-#define BQ769_REG_VC5_LO_ADDR       0x0017 // Voltage Cell 5 Low Byte Register
-#define BQ769_REG_VC6_HI_ADDR       0x0018 // Voltage Cell 6 High Byte Register
-#define BQ769_REG_VC6_LO_ADDR       0x0019 // Voltage Cell 6 Low Byte Register
-#define BQ769_REG_VC7_HI_ADDR       0x001A // Voltage Cell 7 High Byte Register
-#define BQ769_REG_VC7_LO_ADDR       0x001B // Voltage Cell 7 Low Byte Register
-#define BQ769_REG_VC8_HI_ADDR       0x001C // Voltage Cell 8 High Byte Register
-#define BQ769_REG_VC8_LO_ADDR       0x001D // Voltage Cell 8 Low Byte Register
-#define BQ769_REG_VC9_HI_ADDR       0x001E // Voltage Cell 9 High Byte Register
-#define BQ769_REG_VC9_LO_ADDR       0x001F // Voltage Cell 9 Low Byte Register
-#define BQ769_REG_VC10_HI_ADDR      0x0020 // Voltage Cell 10 High Byte Register
-#define BQ769_REG_VC10_LO_ADDR      0x0021 // Voltage Cell 10 Low Byte Register
-#define BQ769_REG_VC11_HI_ADDR      0x0022 // Voltage Cell 11 High Byte Register
-#define BQ769_REG_VC11_LO_ADDR      0x0023 // Voltage Cell 11 Low Byte Register
-#define BQ769_REG_VC12_HI_ADDR      0x0024 // Voltage Cell 12 High Byte Register
-#define BQ769_REG_VC12_LO_ADDR      0x0025 // Voltage Cell 12 Low Byte Register
-#define BQ769_REG_VC13_HI_ADDR      0x0026 // Voltage Cell 13 High Byte Register
-#define BQ769_REG_VC13_LO_ADDR      0x0027 // Voltage Cell 13 Low Byte Register
-#define BQ769_REG_VC14_HI_ADDR      0x0028 // Voltage Cell 14 High Byte Register
-#define BQ769_REG_VC14_LO_ADDR      0x0029 // Voltage Cell 14 Low Byte Register
-#define BQ769_REG_VC15_HI_ADDR      0x002A // Voltage Cell 15 High Byte Register
-#define BQ769_REG_VC15_LO_ADDR      0x002B // Voltage Cell 15 Low Byte Register
+#define BQ769_REG_CC_CFG_ADDR       0x000B // Coulomb Counter Configuration Register
+#define BQ769_REG_VC1_HI_ADDR       0x000C // Voltage Cell 1 High Byte Register
+#define BQ769_REG_VC1_LO_ADDR       0x000D // Voltage Cell 1 Low Byte Register
+#define BQ769_REG_VC2_HI_ADDR       0x000E // Voltage Cell 2 High Byte Register
+#define BQ769_REG_VC2_LO_ADDR       0x000F // Voltage Cell 2 Low Byte Register
+#define BQ769_REG_VC3_HI_ADDR       0x0010 // Voltage Cell 3 High Byte Register
+#define BQ769_REG_VC3_LO_ADDR       0x0011 // Voltage Cell 3 Low Byte Register
+#define BQ769_REG_VC4_HI_ADDR       0x0012 // Voltage Cell 4 High Byte Register
+#define BQ769_REG_VC4_LO_ADDR       0x0013 // Voltage Cell 4 Low Byte Register
+#define BQ769_REG_VC5_HI_ADDR       0x0014 // Voltage Cell 5 High Byte Register
+#define BQ769_REG_VC5_LO_ADDR       0x0015 // Voltage Cell 5 Low Byte Register
+#define BQ769_REG_VC6_HI_ADDR       0x0016 // Voltage Cell 6 High Byte Register
+#define BQ769_REG_VC6_LO_ADDR       0x0017 // Voltage Cell 6 Low Byte Register
+#define BQ769_REG_VC7_HI_ADDR       0x0018 // Voltage Cell 7 High Byte Register
+#define BQ769_REG_VC7_LO_ADDR       0x0019 // Voltage Cell 7 Low Byte Register
+#define BQ769_REG_VC8_HI_ADDR       0x001A // Voltage Cell 8 High Byte Register
+#define BQ769_REG_VC8_LO_ADDR       0x001B // Voltage Cell 8 Low Byte Register
+#define BQ769_REG_VC9_HI_ADDR       0x001C // Voltage Cell 9 High Byte Register
+#define BQ769_REG_VC9_LO_ADDR       0x001D // Voltage Cell 9 Low Byte Register
+#define BQ769_REG_VC10_HI_ADDR      0x001E // Voltage Cell 10 High Byte Register
+#define BQ769_REG_VC10_LO_ADDR      0x001F // Voltage Cell 10 Low Byte Register
+#define BQ769_REG_VC11_HI_ADDR      0x0020 // Voltage Cell 11 High Byte Register
+#define BQ769_REG_VC11_LO_ADDR      0x0021 // Voltage Cell 11 Low Byte Register
+#define BQ769_REG_VC12_HI_ADDR      0x0022 // Voltage Cell 12 High Byte Register
+#define BQ769_REG_VC12_LO_ADDR      0x0023 // Voltage Cell 12 Low Byte Register
+#define BQ769_REG_VC13_HI_ADDR      0x0024 // Voltage Cell 13 High Byte Register
+#define BQ769_REG_VC13_LO_ADDR      0x0025 // Voltage Cell 13 Low Byte Register
+#define BQ769_REG_VC14_HI_ADDR      0x0026 // Voltage Cell 14 High Byte Register
+#define BQ769_REG_VC14_LO_ADDR      0x0027 // Voltage Cell 14 Low Byte Register
+#define BQ769_REG_VC15_HI_ADDR      0x0028 // Voltage Cell 15 High Byte Register
+#define BQ769_REG_VC15_LO_ADDR      0x0029 // Voltage Cell 15 Low Byte Register
+#define BQ769_REG_BAT_HI_ADDR		0x002A // Voltage Battery High Byte Register
+#define BQ769_REG_BAT_LO_ADDR		0x002B // Voltage Battery LOW Byte Register
 #define BQ769_REG_TS1_HI_ADDR       0x002C // Thermistor 1 High Byte Register
 #define BQ769_REG_TS1_LO_ADDR       0x002D // Thermistor 1 Low Byte Register
 #define BQ769_REG_TS2_HI_ADDR       0x002E // Thermistor 2 High Byte Register
@@ -66,10 +68,7 @@
 
 //I2C address
 
-#define BQ7692000_ADDRESS 0x08
-#define BQ7692001_ADDRESS 0x08
-#define BQ7692002_ADDRESS 0x08
-#define BQ7692003_ADDRESS 0x08
+#define BQ769200_ADDRESS 0x08
 #define BQ7692006_ADDRESS 0x18
 #define BQ7693000_ADDRESS 0x08
 #define BQ7693001_ADDRESS 0x08
@@ -83,6 +82,11 @@
 #define BQ7694003_ADDRESS 0x08
 #define BQ7694006_ADDRESS 0x18
 
+#define CB1 1
+#define CB2 (1 << 1)
+#define CB3 (1 << 2)
+#define CB4 (1 << 3)
+#define CB5 (1 << 4)
 
 // Data types for I2C communication
 typedef enum {
@@ -128,6 +132,8 @@ typedef enum {
     BQ769_REG_VC14_LO = BQ769_REG_VC14_LO_ADDR,
     BQ769_REG_VC15_HI = BQ769_REG_VC15_HI_ADDR,
     BQ769_REG_VC15_LO = BQ769_REG_VC15_LO_ADDR,
+	BQ769_REG_BAT_HI = BQ769_REG_BAT_HI_ADDR,
+	BQ769_REG_BAT_LO = BQ769_REG_BAT_LO_ADDR,
     BQ769_REG_TS1_HI = BQ769_REG_TS1_HI_ADDR,
     BQ769_REG_TS1_LO = BQ769_REG_TS1_LO_ADDR,
     BQ769_REG_TS2_HI = BQ769_REG_TS2_HI_ADDR,
@@ -211,5 +217,6 @@ typedef struct {
 uint8_t read_register(uint8_t address, BQ769_Register register);
 void write_register(uint8_t address, BQ769_Register register, uint8_t value);
 void get_configuration(uint8_t address);
+void set_configuration(uint8_t address);
 
 #endif /* UTILS_BQ769X0_H_ */

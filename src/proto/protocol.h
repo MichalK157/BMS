@@ -1,13 +1,23 @@
 #pragma once
 
-#define MAX_CELLS_NUMBER = 15
-#define MAX_THERMISTORS_NUMPER = 3
+#if BQ76920
+#define MAX_CELLS_NUMBER 5
+#define MAX_THERMISTORS_NUMBER 1
+#elif BQ76930
+#define MAX_CELLS_NUMBER 10
+#define MAX_THERMISTORS_NUMBER 2
+#elif BQ76940
+#define MAX_CELLS_NUMBER 15
+#define MAX_THERMISTORS_NUMBER 3
+#endif
 
 typedef enum
 {
     MSG_ID_STATE = 0x53544154,
     MSG_ID_BATTERY = 0x42415454,
+    MSG_ID_CELLS = 0x43454C4C,
     MSG_ID_PROTECTION = 0x50524F54,
+    MSG_ID_CMD = 0x434D445F,
     MSG_ID_GET = 0x47455420,
     MSG_ID_SET = 0x53455420
 
@@ -20,7 +30,7 @@ typedef enum
     Number_of_Cells_3 = 3,
     Number_of_Cells_4 = 4,    
     Number_of_Cells_5 = 5,
-    Number_of_Cells_6 = 6,    
+    Number_of_Cells_6 = 6,
     Number_of_Cells_7 = 7,
     Number_of_Cells_8 = 8,
     Number_of_Cells_9 = 9,
@@ -38,16 +48,32 @@ typedef enum
     Number_of_Thermistors_2 = 2,
     Number_of_Thermistors_3 = 3
 } Number_of_Thermistors;
+
+typedef enum
+{
+    State_Discharge = 1,
+    State_Charge = 2,
+    State_Idle = 3,
+    State_Error = 4,
+} State;
 typedef struct _Battery
 {
-    Number_of_Cells noc;
-    uint16_t voltages[MAX_CELLS_NUMBER];
+    State State;
+    uint16_t voltages;
+    uint16_t current;
 } Battery;
+
+typedef struct _Cells
+{
+    Number_of_Cells noc;
+    uint16_t voltage[MAX_CELLS_NUMBER];
+} Cells;
+
 
 typedef struct _Temperature
 {
     Number_of_Thermistors not;
-    uint16_t temperature[MAX_THERMISTORS_NUMPER]''
+    uint16_t temperature[MAX_THERMISTORS_NUMBER];
 } Temperature;
 
 typedef enum
@@ -64,7 +90,7 @@ typedef struct _BMS
     LOAD load;
 } BMS;
 
-typedef struct Status
+typedef struct _Status
 {
     uint8_t sys_status;
     uint8_t cellbal_1;
@@ -75,7 +101,7 @@ typedef struct Status
     uint8_t protect1;
     uint8_t protect2;
     uint8_t protect3;
-};
+} Status;
 
 typedef enum
 {
@@ -96,12 +122,12 @@ typedef struct _Protection_Activation
 typedef struct _MSG_TO_PC
 {
     MSG_ID id;
-    union data
+    union
     {
         BMS bms;
         Status status;
         Protection_Activation protection;
-    };
+    } data;
 } MSG_TO_PC;
 
 // MSG to BMS
@@ -133,10 +159,10 @@ typedef struct _Set_Msg
 typedef struct _MSG_TO_BMS
 {
     MSG_ID id;
-    union data
+    union
     {
         Get_Msg get_msg;
         Set_Msg set_msg;
-    };
+    } data;
     
 } MSG_TO_BMS;
