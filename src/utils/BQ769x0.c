@@ -30,15 +30,15 @@ void set_configuration(uint8_t address)
 	HAL_Delay(1);
 	write_register(address, BQ769_REG_SYS_CTRL1, 0x18); // 0x19 0x1A shutdown sequence
 	HAL_Delay(1);
-	write_register(address, BQ769_REG_SYS_CTRL2, 0xC3);
+	write_register(address, BQ769_REG_SYS_CTRL2, 0xC0);
 	HAL_Delay(1);
 	write_register(address, BQ769_REG_PROTECT_1, 0x9d);
 	HAL_Delay(1);
 	write_register(address, BQ769_REG_PROTECT_2, 0x5f);
 	HAL_Delay(1);
-	write_register(address, BQ769_REG_PROTECT_3, 0x50);
+	write_register(address, BQ769_REG_PROTECT_3, 0xb0);
 	HAL_Delay(1);
-	write_register(address, BQ769_REG_OV_TRIP, 0xac);
+	write_register(address, BQ769_REG_OV_TRIP, 0xDC); //AC
 	HAL_Delay(1);
 	write_register(address, BQ769_REG_UV_TRIP, 0x97);
 	HAL_Delay(1);
