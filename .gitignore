@@ -59,4 +59,5 @@ API/build/*
 Debug/*
 .vscode/*
 settings/*
+src/proto/testbed.code-workspace 
 
