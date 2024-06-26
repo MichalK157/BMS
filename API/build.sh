@@ -14,6 +14,6 @@ mkdir proto
 cp $repo_dir/src/proto/protocol.h $repo_dir/API/proto/
 cd build
 
-cmake ..
+cmake -DBQ_TYPE=BQ76920 ..
 make 
 

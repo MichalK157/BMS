@@ -27,14 +27,20 @@ set(HEADERS_API
     src/SerialPort.h
     src/q_main_window.h
     src/q_communication.h
+    src/q_tools.h
     proto/protocol.h
+    src/serialization.h
 )
 
 set(FILES_API
     src/SerialPort.cpp
     src/q_main_window.cpp
     src/q_communication.cpp
+    src/q_tools.cpp
+    src/serialization.cpp
 )
+
+set(BQ_TYPE "" CACHE STRING "Specify the BQ version (BQ76920, BQ76930, or BQ76940)")
 
 add_executable(bms_api 
             main.cpp
@@ -46,6 +52,16 @@ target_link_libraries(bms_api Qt5::Widgets)
 
 find_package(Threads REQUIRED)
 target_link_libraries(bms_api Qt5::Core Qt5::Gui Qt5::Widgets)
+
+if (BQ_TYPE STREQUAL "BQ76920")
+    target_compile_definitions(bms_api PRIVATE BQ76920)
+elseif (BQ_TYPE STREQUAL "BQ76930")
+    target_compile_definitions(bms_api PRIVATE BQ76930)
+elseif (BQ_TYPE STREQUAL "BQ76940")
+    target_compile_definitions(bms_api PRIVATE BQ76940)
+else()
+    message(FATAL_ERROR "Unknown BQ_TYPE: ${BQ_VERSION}")
+endif()
 
 add_custom_command(TARGET bms_api
        	POST_BUILD

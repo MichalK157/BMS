@@ -1,23 +1,23 @@
 #pragma once
 
+#include "SerialPort.h"
 #include <QThread>
 #include <cstdint>
 #include <stdbool.h>
-#include "SerialPort.h"
-
 
 class SerialReaderThread : public QThread {
-    Q_OBJECT
+  Q_OBJECT
 private:
-    SerialPort* serial;
-    bool is_run;
+  SerialPort *serial;
+  bool is_run;
+
 public:
-    explicit SerialReaderThread(QObject *parent = nullptr);
-    ~SerialReaderThread();
-    void run() override;
-    void send(const char* data);
-    void stop();
+  explicit SerialReaderThread(QObject *parent = nullptr);
+  ~SerialReaderThread();
+  void run() override;
+  void send(const uint8_t *data);
+  void stop();
 
 signals:
-    void newData(const char* data);
+  void newData(const uint8_t *data);
 };

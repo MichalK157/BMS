@@ -3,30 +3,27 @@
 #ifndef Q_MAIN_WINDOW_H
 #define Q_MAIN_WINDOW_H
 
-#include <QMainWindow>
-#include <QThread>
 #include "../build/ui_bms_api.h"
 #include "q_communication.h"
+#include <QMainWindow>
+#include <QThread>
 
 using namespace Ui;
 
-class Q_main_window : public QMainWindow
-{
-    Q_OBJECT
+class Q_main_window : public QMainWindow {
+  Q_OBJECT
 
 public:
-    explicit Q_main_window(QWidget *parent = nullptr);
-    ~Q_main_window();
+  explicit Q_main_window(QWidget *parent = nullptr);
+  ~Q_main_window();
 
 private:
-    Ui_BMS* ui;
-    SerialReaderThread *serialReaderThread;
-    void send();
+  Ui_BMS *ui;
+  SerialReaderThread *serialReaderThread;
+  void send();
 
 private slots:
-    void getdate(const char* data);
+  void getdate(const uint8_t *data);
 };
-
-
 
 #endif
