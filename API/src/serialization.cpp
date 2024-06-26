@@ -147,6 +147,5 @@ uint8_t *bms_msg_serialization_to_buffer(const MSG_TO_BMS *msg) {
     return NULL;
   }
   }
-
   return buffer;
 }
