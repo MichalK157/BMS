@@ -1,11 +1,12 @@
 #include "q_main_window.h"
 #include "protocol.h"
-#include "q_tools.h"
 #include "serialization.h"
 #include <iostream>
 
 Q_main_window::Q_main_window(QWidget *parent) : QMainWindow(parent) {
   serialReaderThread = new SerialReaderThread();
+  logger = new Logger("log.csv");
+  logger->init_logger();
   ui->setupUi(this);
   connect(serialReaderThread, &SerialReaderThread::newData, this,
           &Q_main_window::getdate);
@@ -20,6 +21,7 @@ Q_main_window::~Q_main_window() {
   serialReaderThread->quit();
   serialReaderThread->wait();
   delete serialReaderThread;
+  delete logger;
 }
 
 void Q_main_window::disconnect_bms() {
@@ -48,7 +50,21 @@ void Q_main_window::getdate(const uint8_t *data) {
 
   MSG_TO_PC *msg = buffer_serialization_to_pc_msg(data);
   if (msg != NULL) {
-    update_cells(ui, &msg->cells);
+    switch (msg->id) {
+    case MSG_ID_CELLS: {
+      update_cells(ui, msg, logger);
+      break;
+    }
+    case MSG_ID_STATE: {
+      break;
+    }
+    case MSG_ID_BATTERY: {
+      break;
+    }
+    default: {
+      break;
+    }
+    }
     delete msg;
   }
 }

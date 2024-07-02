@@ -5,6 +5,7 @@
 
 #include "../build/ui_bms_api.h"
 #include "q_communication.h"
+#include "q_tools.h"
 #include <QMainWindow>
 #include <QThread>
 
@@ -19,6 +20,7 @@ public:
 
 private:
   Ui_BMS *ui;
+  Logger *logger;
   SerialReaderThread *serialReaderThread;
   void connect_bms();
   void disconnect_bms();
