@@ -20,7 +20,8 @@ public:
 private:
   Ui_BMS *ui;
   SerialReaderThread *serialReaderThread;
-  void send();
+  void connect_bms();
+  void disconnect_bms();
 
 private slots:
   void getdate(const uint8_t *data);

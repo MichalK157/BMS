@@ -116,36 +116,12 @@ MSG_TO_BMS *buffer_serialization_to_bms_msg(const uint8_t *buffer) {
 uint8_t *bms_msg_serialization_to_buffer(const MSG_TO_BMS *msg) {
   uint8_t *buffer = (uint8_t *)malloc(sizeof(MSG_TO_BMS));
   memset(buffer, 0, sizeof(MSG_TO_BMS));
+  memcpy(buffer, msg, sizeof(MSG_TO_BMS));
+  std::cout << "0x";
+  for (int i = 0; i < sizeof(MSG_TO_BMS); i++) {
+    std::cout << std::hex << buffer[i];
+  }
+  std::cout << std::endl;
 
-  memcpy(buffer, &msg->id, sizeof(MSG_ID));
-  buffer += sizeof(MSG_ID);
-
-  switch (msg->id) {
-  case MSG_ID_GET: {
-    memcpy(buffer, &msg->get_msg.name, sizeof(Get_Msg_Name));
-    buffer += sizeof(Get_Msg_Name);
-    memcpy(buffer, &msg->get_msg.special, sizeof(uint8_t));
-    buffer += sizeof(uint8_t);
-    break;
-  }
-  case MSG_ID_SET: {
-    memcpy(buffer, &msg->set_msg.name, sizeof(Set_Msg_Name));
-    buffer += sizeof(Set_Msg_Name);
-    memcpy(buffer, &msg->set_msg.reg_value, sizeof(uint8_t));
-    buffer += sizeof(uint8_t);
-    break;
-  }
-  case MSG_ID_COMMUNICATION: {
-    memcpy(buffer, &msg->communication, sizeof(Communication));
-    buffer += sizeof(Communication);
-    break;
-  }
-
-  default: {
-    buffer -= sizeof(MSG_ID);
-    free(buffer);
-    return NULL;
-  }
-  }
   return buffer;
 }

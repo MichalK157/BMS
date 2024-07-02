@@ -25,5 +25,6 @@ void serialized_msg(uint8_t *data);
 uint8_t get_cmd_counter();
 bool cmd_is_empty();
 MSG_TO_BMS *get_cmd();
+bool communication_is_enable(void);
 
 #endif /* UTILS_COM_H_ */

@@ -7,6 +7,7 @@
 uint8_t rxdata[128];
 
 static CMD *cmd;
+volatile bool communication;
 
 void *convert(uint8_t *buffer, size_t size);
 void add_cmd(const MSG_TO_BMS *msg);
@@ -20,6 +21,8 @@ void startUart(void) {
   cmd->empty = true;
   cmd->number_of_cmd = 0;
 
+  communication = false;
+
   HAL_UART_Receive_IT(&huart1, rxdata, sizeof(MSG_TO_BMS));
 }
 
@@ -31,7 +34,13 @@ void serialized_msg(uint8_t *data) {
   case MSG_ID_COMMUNICATION: {
     msg->communication =
         *((Communication *)convert(data, sizeof(Communication)));
-    break;
+    if (msg->communication == Communication_Init) {
+      communication = true;
+    } else {
+      communication = false;
+    }
+    free(msg);
+    return;
   }
   case MSG_ID_GET: {
     msg->get_msg.name = *((Get_Msg_Name *)convert(data, sizeof(Get_Msg_Name)));
@@ -50,6 +59,7 @@ void serialized_msg(uint8_t *data) {
     break;
   }
   }
+
   if (msg == NULL) {
     free(msg);
     return;
@@ -62,7 +72,22 @@ void serialized_msg(uint8_t *data) {
 uint8_t get_cmd_counter() { return cmd->number_of_cmd; }
 
 MSG_TO_BMS *get_cmd() {
+  if (!cmd->empty) {
+    return NULL;
+  }
+
   MSG_TO_BMS *msg = (MSG_TO_BMS *)malloc(sizeof(MSG_TO_BMS));
+  memcpy(msg, &cmd->msg[0], sizeof(MSG_TO_BMS));
+
+  for (int i = 0; i < cmd->number_of_cmd - 1; i++) {
+    memset(&cmd->msg[i], 0, sizeof(MSG_TO_BMS));
+    memcpy(&cmd->msg[i], &cmd->msg[i + 1], sizeof(MSG_TO_BMS));
+  }
+  cmd->number_of_cmd--;
+
+  if (cmd->number_of_cmd == 0) {
+    cmd->empty = true;
+  }
   return msg;
 }
 
@@ -91,3 +116,5 @@ void add_cmd(const MSG_TO_BMS *msg) {
     }
   }
 }
+
+bool communication_is_enable(void) { return communication; }
