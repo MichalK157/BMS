@@ -20,12 +20,13 @@ uint8_t bms(void) {
   cells = malloc(sizeof(Cells));
   temperature = malloc(sizeof(Temperature));
   MSG_TO_PC *msg = (MSG_TO_PC *)malloc(sizeof(MSG_TO_PC));
-
+  uint8_t data[sizeof(MSG_TO_PC)];
+  memset(msg, 0, sizeof(MSG_TO_PC));
   cells->noc = Number_of_Cells_5;
   temperature->nt = Number_of_Thermistors_1;
   startUart();
   set_configuration(BQ769200_ADDRESS);
-  write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc3);
+  //write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc3);
   // write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc1);
   while (1) {
     if (communication_is_enable()) {
@@ -78,9 +79,10 @@ uint8_t bms(void) {
       }
 
       msg->id = MSG_ID_CELLS;
+      memset(data, 0 , sizeof(data));
       memcpy(&msg->cells, cells, sizeof(Cells));
-
-      HAL_UART_Transmit(&huart1, (uint8_t *)msg, sizeof(MSG_TO_PC), 100);
+      memcpy(data, msg, sizeof(MSG_TO_PC));
+      HAL_UART_Transmit(&huart1, (uint8_t *)data, sizeof(MSG_TO_PC), 100);
       /*
       if(read_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL1) & 0x80)
       {

@@ -59,6 +59,7 @@ void Q_main_window::getdate(const uint8_t *data) {
       break;
     }
     case MSG_ID_BATTERY: {
+
       break;
     }
     default: {

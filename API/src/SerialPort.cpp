@@ -71,7 +71,6 @@ int SerialPort::readData(uint8_t *buffer, size_t size) {
 }
 
 bool SerialPort::writeData(const uint8_t *buffer, size_t size) {
-  std::cout << "writedata" << std::endl;
   memset(tx_buffer, 0, size);
   memcpy(tx_buffer, buffer, size);
 

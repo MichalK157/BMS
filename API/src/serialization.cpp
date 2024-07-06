@@ -51,14 +51,16 @@ MSG_TO_PC *buffer_serialization_to_pc_msg(const uint8_t *buffer) {
     buffer += sizeof(uint16_t);
     msg->battery.current = convert<uint16_t>(buffer);
     buffer += sizeof(uint16_t);
-    msg->battery.temperature.nt = convert<Number_of_Thermistors>(buffer);
-    buffer += sizeof(Number_of_Thermistors);
+    msg->battery.temperature.nt =
+        (Number_of_Thermistors)convert<uint8_t>(buffer);
+    buffer += sizeof(uint16_t);
+    msg->battery.temperature.temperature[0] = convert<uint16_t>(buffer);
     break;
   }
   case MSG_ID_CELLS: {
 
-    msg->cells.noc = convert<Number_of_Cells>(buffer);
-    buffer += sizeof(Number_of_Cells);
+    msg->cells.noc = (Number_of_Cells)convert<uint8_t>(buffer);
+    buffer += sizeof(uint16_t);
     for (int i = 0; i < MAX_CELLS_NUMBER; i++) {
       msg->cells.voltage[i] = convert<uint16_t>(buffer);
       buffer += sizeof(uint16_t);
