@@ -26,6 +26,19 @@ void update_cells(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger) {
   logger->log(msg);
 }
 
+void update_battery(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger) {
+  updateLabel(
+      ui->Label_Current,
+      lexical_cast<string>(((msg->battery.current * 0.38) + 0.3) / 1000));
+  if (msg->battery.load == LOAD_detect) {
+    ui->Label_Current->setStyleSheet(
+        "QLabel { background-color : green; color : black; }");
+  } else {
+    ui->Label_Current->setStyleSheet(
+        "QLabel { background-color : red; color : black; }");
+  }
+}
+
 std::string Logger::Logger::getTimeStamp() {
   std::time_t now = std::time(nullptr);
   char buf[80];

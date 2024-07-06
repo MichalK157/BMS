@@ -23,5 +23,6 @@ public:
 
 void updateLabel(QLabel *label, std::string data);
 void update_cells(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger);
+void update_battery(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger);
 
 #endif

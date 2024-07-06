@@ -55,6 +55,8 @@ MSG_TO_PC *buffer_serialization_to_pc_msg(const uint8_t *buffer) {
         (Number_of_Thermistors)convert<uint8_t>(buffer);
     buffer += sizeof(uint16_t);
     msg->battery.temperature.temperature[0] = convert<uint16_t>(buffer);
+    buffer += sizeof(uint16_t);
+    msg->battery.load = (LOAD)convert<uint8_t>(buffer);
     break;
   }
   case MSG_ID_CELLS: {
