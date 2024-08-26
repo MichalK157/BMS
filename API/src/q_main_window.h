@@ -21,9 +21,11 @@ public:
 private:
   Ui_BMS *ui;
   Logger *logger;
+  bool charge_press;
   SerialReaderThread *serialReaderThread;
   void connect_bms();
   void disconnect_bms();
+  void charge();
 
 private slots:
   void getdate(const uint8_t *data);

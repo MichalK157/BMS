@@ -130,7 +130,8 @@ typedef struct _Get_Msg {
 
 typedef enum {
   Set_Msg_Name_sys_stat = 0x534D4E53,
-  Set_Msg_Name_cc = 0x534D4E43
+  Set_Msg_Name_cc = 0x534D4E43,
+  Set_Msg_Name_ctrl2 = 0x534d5555
 } Set_Msg_Name;
 typedef struct _Set_Msg {
   Set_Msg_Name name;

@@ -11,7 +11,6 @@
 static Battery *battery;
 static Cells *cells;
 
-
 uint8_t bms(void) {
   extern UART_HandleTypeDef huart1;
 
@@ -24,13 +23,13 @@ uint8_t bms(void) {
   battery->temperature.nt = Number_of_Thermistors_1;
   startUart();
   set_configuration(BQ769200_ADDRESS);
-  // write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc3);
-  //  write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc1);
-  while (1) {
 
-    if (read_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT) == 0x84) {
-      // write_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT, 0xBF);
-      //  write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xc1);
+  while (1) {
+	  uint8_t stat =read_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT);
+    if ( stat != 0x80) {
+      write_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT, 0xBF);
+      // to do detection type of error
+      write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xC3);
     }
 
     if (communication_is_enable()) {
@@ -70,7 +69,7 @@ uint8_t bms(void) {
       battery->voltage =
           ((read_register(BQ769200_ADDRESS, BQ769_REG_BAT_HI) << 8) |
            read_register(BQ769200_ADDRESS, BQ769_REG_BAT_LO));
-      if (read_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL1) & 0x80) {
+      if (read_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL1) && 0x80) {
         battery->load = LOAD_detect;
         battery->current =
             ((read_register(BQ769200_ADDRESS, BQ769_REG_CC_HI) << 8) |

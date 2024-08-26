@@ -8,12 +8,14 @@ Q_main_window::Q_main_window(QWidget *parent) : QMainWindow(parent) {
   logger = new Logger("log.csv");
   logger->init_logger();
   ui->setupUi(this);
+  charge_press = false;
   connect(serialReaderThread, &SerialReaderThread::newData, this,
           &Q_main_window::getdate);
   connect(ui->Connect, &QPushButton::released, this,
           &Q_main_window::connect_bms);
   connect(ui->Disconnect, &QPushButton::released, this,
           &Q_main_window::disconnect_bms);
+  connect(ui->charge, &QPushButton::released, this, &Q_main_window::charge);
   serialReaderThread->start();
 }
 Q_main_window::~Q_main_window() {
@@ -32,6 +34,23 @@ void Q_main_window::disconnect_bms() {
   uint8_t *buffer = bms_msg_serialization_to_buffer(&msg);
   if (buffer != NULL) {
     serialReaderThread->send(buffer);
+  }
+}
+
+void Q_main_window::charge() {
+  MSG_TO_BMS msg;
+  msg.id = MSG_ID_SET;
+  if (charge_press) {
+    charge_press = false;
+    ui->charge->setText(QString("unload"));
+    msg.set_msg.name = Set_Msg_Name_ctrl2;
+    msg.set_msg.reg_value = 0x02;
+
+  } else {
+    charge_press = true;
+    ui->charge->setText(QString("charging"));
+    msg.set_msg.name = Set_Msg_Name_ctrl2;
+    msg.set_msg.reg_value = 0x01;
   }
 }
 

@@ -27,11 +27,11 @@ void set_configuration(uint8_t address) {
   HAL_Delay(5);
   write_register(address, BQ769_REG_SYS_STAT, 0xBF);
   HAL_Delay(1);
-  write_register(address, BQ769_REG_CELLBAL_1, 0x00); //0x00 off, 0x13 3 cells, 0x17 4 cells, 0x1f 5calls
+  write_register(address, BQ769_REG_CELLBAL_1, 0x1f); //0x00 off, 0x13 3 cells, 0x17 4 cells, 0x1f 5calls
   HAL_Delay(1);
   write_register(address, BQ769_REG_SYS_CTRL1,0x18); // 0x19 0x1A shutdown sequence
   HAL_Delay(1);
-  write_register(address, BQ769_REG_SYS_CTRL2, 0xC0); //0xc0 off 0xc1 load 0xc2 charge
+  write_register(address, BQ769_REG_SYS_CTRL2, 0xC3); //0xc0 off 0xc1 load 0xc2 charge
   HAL_Delay(1);
   write_register(address, BQ769_REG_PROTECT_1, 0x9d);
   HAL_Delay(1);

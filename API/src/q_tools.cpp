@@ -1,8 +1,12 @@
 #include "q_tools.h"
 #include "boost/lexical_cast.hpp"
 //#include <bits/stdc++.h>
+#include <array>
+#include <charconv>
 #include <ctime>
+#include <iomanip>
 #include <string>
+#include <string_view>
 
 using namespace std;
 using boost::bad_lexical_cast;
@@ -12,24 +16,29 @@ void updateLabel(QLabel *label, std::string data) {
   label->setText(QString(data.c_str()));
 }
 
+static std::string trim_value(const int16_t value, const double percale,
+                              const uint16_t divider, const double offset,
+                              const std::string suffix);
+
 void update_cells(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger) {
-  updateLabel(ui->c1_2, lexical_cast<string>(
-                            ((msg->cells.voltage[0] * 0.38) + 0.3) / 1000));
-  updateLabel(ui->c1_3, lexical_cast<string>(
-                            ((msg->cells.voltage[1] * 0.38) + 0.3) / 1000));
-  updateLabel(ui->c1_4, lexical_cast<string>(
-                            ((msg->cells.voltage[2] * 0.38) + 0.3) / 1000));
-  updateLabel(ui->c1_5, lexical_cast<string>(
-                            ((msg->cells.voltage[3] * 0.38) + 0.3) / 1000));
-  updateLabel(ui->c1_6, lexical_cast<string>(
-                            ((msg->cells.voltage[4] * 0.38) + 0.3) / 1000));
+
+  updateLabel(ui->c1_2,
+              trim_value(msg->cells.voltage[0], 0.38, 1000, 0.03, " V"));
+  updateLabel(ui->c1_3,
+              trim_value(msg->cells.voltage[1], 0.38, 1000, 0.03, " V"));
+  updateLabel(ui->c1_4,
+              trim_value(msg->cells.voltage[2], 0.38, 1000, 0.03, " V"));
+  updateLabel(ui->c1_5,
+              trim_value(msg->cells.voltage[3], 0.38, 1000, 0.03, " V"));
+  updateLabel(ui->c1_6,
+              trim_value(msg->cells.voltage[4], 0.38, 1000, 0.03, " V"));
   logger->log(msg);
 }
 
 void update_battery(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger) {
-  updateLabel(
-      ui->Label_Current,
-      lexical_cast<string>(((msg->battery.current * 0.38) + 0.3) / 1000));
+
+  updateLabel(ui->Label_Current,
+              trim_value(msg->battery.current, 0.844, 1000, 0, " A"));
   if (msg->battery.load == LOAD_detect) {
     ui->Label_Current->setStyleSheet(
         "QLabel { background-color : green; color : black; }");
@@ -37,6 +46,7 @@ void update_battery(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger) {
     ui->Label_Current->setStyleSheet(
         "QLabel { background-color : red; color : black; }");
   }
+  logger->log(msg);
 }
 
 std::string Logger::Logger::getTimeStamp() {
@@ -87,8 +97,8 @@ void Logger::log(const MSG_TO_PC *msg) {
     for (int i = 0; i < 6; i++) {
       logFile << ";";
     }
-    logFile << msg->battery.voltage << ";";
-    logFile << msg->battery.current << ";";
+    logFile << trim_value(msg->battery.voltage, 1.532, 1000, 0, "") << ";";
+    logFile << trim_value(msg->battery.current, 0.000844, 1, 0, "") << ";";
     logFile << msg->battery.temperature.temperature[0] << ";";
     logFile << msg->battery.load << ";" << std::endl;
     break;
@@ -98,7 +108,7 @@ void Logger::log(const MSG_TO_PC *msg) {
             << ";";
     logFile << msg->cells.noc << ";";
     for (int i = 0; i < MAX_CELLS_NUMBER; i++) {
-      logFile << msg->cells.voltage[i] << ";";
+      logFile << trim_value(msg->cells.voltage[i], 0.38, 1000, 0.03, "") << ";";
     }
     logFile << std::endl;
     break;
@@ -107,4 +117,19 @@ void Logger::log(const MSG_TO_PC *msg) {
     break;
   }
   }
+}
+
+static std::string trim_value(const int16_t value, const double percale,
+                              const uint16_t divider, const double offset,
+                              const std::string suffix) {
+  std::array<char, 6> str;
+
+  auto [prt, ex] =
+      std::to_chars(str.data(), str.data() + str.size(),
+                    (double)(((value * percale) / divider) + offset),
+                    std::chars_format::fixed, 2);
+
+  std::string sstr(str.data());
+  sstr.append(suffix);
+  return sstr;
 }

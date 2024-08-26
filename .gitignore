@@ -61,3 +61,5 @@ Debug/*
 .settings/*
 src/proto/testbed.code-workspace 
 *.csv
+
+BMS.code-workspace
