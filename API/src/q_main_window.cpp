@@ -75,6 +75,7 @@ void Q_main_window::getdate(const uint8_t *data) {
       break;
     }
     case MSG_ID_STATE: {
+      update_status(ui, msg, logger);
       break;
     }
     case MSG_ID_BATTERY: {

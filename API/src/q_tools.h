@@ -18,11 +18,12 @@ public:
   Logger(const std::string &fileName) : filename(fileName){};
   ~Logger();
   void init_logger();
-  void log(const MSG_TO_PC *msg);
+  void log(const MSG_TO_PC *msg, Ui_BMS *ui);
 };
 
 void updateLabel(QLabel *label, std::string data);
 void update_cells(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger);
 void update_battery(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger);
+void update_status(Ui_BMS *ui, const MSG_TO_PC *msg, Logger *logger);
 
 #endif
