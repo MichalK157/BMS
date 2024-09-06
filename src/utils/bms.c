@@ -10,6 +10,7 @@
 
 static Battery *battery;
 static Cells *cells;
+static Status *status;
 
 uint8_t bms(void) {
   extern UART_HandleTypeDef huart1;
@@ -17,6 +18,7 @@ uint8_t bms(void) {
   // INITIALISATION
   battery = malloc(sizeof(Battery));
   cells = malloc(sizeof(Cells));
+  status = malloc(sizeof(Status));
   MSG_TO_PC *msg = (MSG_TO_PC *)malloc(sizeof(MSG_TO_PC));
   memset(msg, 0, sizeof(MSG_TO_PC));
   cells->noc = Number_of_Cells_5;
@@ -25,14 +27,21 @@ uint8_t bms(void) {
   set_configuration(BQ769200_ADDRESS);
 
   while (1) {
-	  uint8_t stat =read_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT);
-    if ( stat != 0x80) {
+    uint8_t stat = read_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT);
+    if (stat != 0x80) {
+      memset(status, 0, sizeof(Status));
+      memset(msg, 0, sizeof(MSG_TO_PC));
+      status->sys_status = stat;
+      msg->id = MSG_ID_STATE;
+      memcpy(&msg->status, status, sizeof(Status));
+      HAL_UART_Transmit(&huart1, (uint8_t *)msg, sizeof(MSG_TO_PC), 100);
       write_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT, 0xBF);
       // to do detection type of error
       write_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL2, 0xC3);
     }
 
     if (communication_is_enable()) {
+
       battery->voltage =
           (read_register(BQ769200_ADDRESS, BQ769_REG_BAT_HI) << 8) |
           read_register(BQ769200_ADDRESS, BQ769_REG_BAT_LO);

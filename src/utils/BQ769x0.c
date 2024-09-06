@@ -1,8 +1,8 @@
 
 #include "BQ769x0.h"
 #include "main.h"
-#include "stm32f0xx_hal.h"
 #include "stdlib.h"
+#include "stm32f0xx_hal.h"
 
 static BQ769_Config *config;
 extern I2C_HandleTypeDef hi2c1;
@@ -27,11 +27,14 @@ void set_configuration(uint8_t address) {
   HAL_Delay(5);
   write_register(address, BQ769_REG_SYS_STAT, 0xBF);
   HAL_Delay(1);
-  write_register(address, BQ769_REG_CELLBAL_1, 0x1f); //0x00 off, 0x13 3 cells, 0x17 4 cells, 0x1f 5calls
+  write_register(address, BQ769_REG_CELLBAL_1,
+                 0x1f); // 0x00 off, 0x13 3 cells, 0x17 4 cells, 0x1f 5calls
   HAL_Delay(1);
-  write_register(address, BQ769_REG_SYS_CTRL1,0x18); // 0x19 0x1A shutdown sequence
+  write_register(address, BQ769_REG_SYS_CTRL1,
+                 0x18); // 0x19 0x1A shutdown sequence
   HAL_Delay(1);
-  write_register(address, BQ769_REG_SYS_CTRL2, 0xC3); //0xc0 off 0xc1 load 0xc2 charge
+  write_register(address, BQ769_REG_SYS_CTRL2,
+                 0xC3); // 0xc0 off 0xc1 load 0xc2 charge
   HAL_Delay(1);
   write_register(address, BQ769_REG_PROTECT_1, 0x9d);
   HAL_Delay(1);
@@ -39,7 +42,7 @@ void set_configuration(uint8_t address) {
   HAL_Delay(1);
   write_register(address, BQ769_REG_PROTECT_3, 0xb0);
   HAL_Delay(1);
-  write_register(address, BQ769_REG_OV_TRIP, 0xDC); // AC
+  write_register(address, BQ769_REG_OV_TRIP, 0xAC); // AC
   HAL_Delay(1);
   write_register(address, BQ769_REG_UV_TRIP, 0x97);
   HAL_Delay(1);
@@ -48,28 +51,28 @@ void set_configuration(uint8_t address) {
 }
 
 void get_configuration(uint8_t address) {
-	config = (BQ769_Config*)malloc(sizeof(BQ769_Config));
-	config->sys_stat = read_register(address, BQ769_REG_SYS_STAT);
-	HAL_Delay(1);
-	config->cellbal_1 = read_register(address, BQ769_REG_CELLBAL_1);
-	HAL_Delay(1);
-	config->cellbal_2 = read_register(address, BQ769_REG_CELLBAL_2);
-	HAL_Delay(1);
-	config->cellbal_3 = read_register(address, BQ769_REG_CELLBAL_3);
-	HAL_Delay(1);
-	config->sys_ctrl1 = read_register(address, BQ769_REG_SYS_CTRL1);
-	HAL_Delay(3);
-	config->sys_ctrl2 = read_register(address, BQ769_REG_SYS_CTRL2);
-	HAL_Delay(3);
-	config->protect1= read_register(address, BQ769_REG_PROTECT_1);
-	HAL_Delay(3);
-	config->protect2 = read_register(address, BQ769_REG_PROTECT_2);
-	HAL_Delay(3);
-	config->protect3 = read_register(address, BQ769_REG_PROTECT_3);
-	HAL_Delay(3);
-	config->ov_trip = read_register(address, BQ769_REG_OV_TRIP);
-	HAL_Delay(3);
-	config->uv_trip = read_register(address, BQ769_REG_UV_TRIP);
-	HAL_Delay(3);
-	config->cc_cfg = read_register(address, BQ769_REG_CC_CFG);
+  config = (BQ769_Config *)malloc(sizeof(BQ769_Config));
+  config->sys_stat = read_register(address, BQ769_REG_SYS_STAT);
+  HAL_Delay(1);
+  config->cellbal_1 = read_register(address, BQ769_REG_CELLBAL_1);
+  HAL_Delay(1);
+  config->cellbal_2 = read_register(address, BQ769_REG_CELLBAL_2);
+  HAL_Delay(1);
+  config->cellbal_3 = read_register(address, BQ769_REG_CELLBAL_3);
+  HAL_Delay(1);
+  config->sys_ctrl1 = read_register(address, BQ769_REG_SYS_CTRL1);
+  HAL_Delay(3);
+  config->sys_ctrl2 = read_register(address, BQ769_REG_SYS_CTRL2);
+  HAL_Delay(3);
+  config->protect1 = read_register(address, BQ769_REG_PROTECT_1);
+  HAL_Delay(3);
+  config->protect2 = read_register(address, BQ769_REG_PROTECT_2);
+  HAL_Delay(3);
+  config->protect3 = read_register(address, BQ769_REG_PROTECT_3);
+  HAL_Delay(3);
+  config->ov_trip = read_register(address, BQ769_REG_OV_TRIP);
+  HAL_Delay(3);
+  config->uv_trip = read_register(address, BQ769_REG_UV_TRIP);
+  HAL_Delay(3);
+  config->cc_cfg = read_register(address, BQ769_REG_CC_CFG);
 }
