@@ -9,6 +9,7 @@ uint8_t rxdata[128];
 static CMD *cmd;
 volatile bool communication;
 
+// to do : remove convert use projecting
 void *convert(uint8_t *buffer, size_t size);
 void add_cmd(const MSG_TO_BMS *msg);
 
