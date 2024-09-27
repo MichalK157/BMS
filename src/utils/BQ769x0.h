@@ -1,12 +1,8 @@
-/*
- * BQ769x0.h
- *
- *  Created on: May 15, 2024
- *      Author: mkac
- */
+
 
 #ifndef UTILS_BQ769X0_H_
 #define UTILS_BQ769X0_H_
+#include "../proto/protocol.h"
 #include "stdint.h"
 
 // Addresses of registers in the BQ769 circuit
@@ -194,27 +190,14 @@ typedef struct {
   uint8_t adcgain2;
 } BQ769_Config;
 
-typedef struct {
-  uint16_t voltage;
-} BQ769_Voltage;
-
-typedef struct {
-  uint16_t current;
-} BQ769_Current;
-
-typedef struct {
-  uint16_t temperature;
-} BQ769_Temperature;
-
-typedef struct {
-  uint8_t address;
-  int bus_fd; // File descriptor for the I2C bus
-              // Add other necessary fields
-} BQ769_Device;
-
-uint8_t read_register(uint8_t address, BQ769_Register register);
-void write_register(uint8_t address, BQ769_Register register, uint8_t value);
 void get_configuration(uint8_t address);
 void set_configuration(uint8_t address);
-
+void init_battery();
+void get_battery(Battery *_battery);
+void read_sys_status();
+void read_cells(bool communication);
+void read_current();
+void read_voltage(bool communication);
+void read_load(bool communication);
+void balancing_cells();
 #endif /* UTILS_BQ769X0_H_ */

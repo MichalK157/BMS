@@ -97,15 +97,13 @@ int main(void) {
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  bms();
+
   // it shuldn't be in this loop
   while (1) {
     /* USER CODE END WHILE */
-
+    Error_Handler();
     /* USER CODE BEGIN 3 */
-    uint8_t r = bms();
-    if (r != 0) {
-      Error_Handler();
-    }
   }
   /* USER CODE END 3 */
 }

@@ -29,30 +29,26 @@ void startUart(void) {
 
 void serialized_msg(uint8_t *data) {
   MSG_TO_BMS *msg = (MSG_TO_BMS *)malloc(sizeof(MSG_TO_BMS));
-  msg->id = *((MSG_ID *)convert(data, sizeof(MSG_ID)));
-  data += sizeof(MSG_ID);
+  memcpy(msg, data, sizeof(MSG_TO_BMS));
+  // msg->id = *((MSG_ID *)convert(data, sizeof(MSG_ID)));
+  // data += sizeof(MSG_ID);
   switch (msg->id) {
   case MSG_ID_COMMUNICATION: {
-    msg->communication =
-        *((Communication *)convert(data, sizeof(Communication)));
+    // msg->communication =*((Communication *)convert(data,
+    // sizeof(Communication)));
     if (msg->communication == Communication_Init) {
       communication = true;
     } else {
       communication = false;
     }
-    free(msg);
-    return;
+    break;
   }
   case MSG_ID_GET: {
-    msg->get_msg.name = *((Get_Msg_Name *)convert(data, sizeof(Get_Msg_Name)));
-    data += sizeof(Get_Msg_Name);
-    msg->get_msg.special = *((uint8_t *)convert(data, sizeof(uint8_t)));
+    add_cmd(msg);
     break;
   }
   case MSG_ID_SET: {
-    msg->set_msg.name = *((Set_Msg_Name *)convert(data, sizeof(Set_Msg_Name)));
-    data += sizeof(Set_Msg_Name);
-    msg->set_msg.reg_value = *((uint8_t *)convert(data, sizeof(uint8_t)));
+    add_cmd(msg);
     break;
   }
   default: {
@@ -66,7 +62,6 @@ void serialized_msg(uint8_t *data) {
     return;
   }
 
-  add_cmd(msg);
   free(msg);
 }
 
@@ -94,7 +89,7 @@ MSG_TO_BMS *get_cmd() {
 
 bool cmd_is_empty() { return cmd->empty; }
 
-void *convert(uint8_t *buffer, size_t size) {
+/*void *convert(uint8_t *buffer, size_t size) {
   uint8_t *value = malloc(size);
 
   if (value == NULL) {
@@ -106,7 +101,7 @@ void *convert(uint8_t *buffer, size_t size) {
   }
   return (void *)value;
 }
-
+*/
 void add_cmd(const MSG_TO_BMS *msg) {
   // copy msg to cmd list
   if (cmd->number_of_cmd < MAX_CMD_COUNT) {

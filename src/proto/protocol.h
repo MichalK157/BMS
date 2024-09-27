@@ -18,13 +18,8 @@ extern "C" {
 #define MAX_THERMISTORS_NUMBER 3
 #endif
 
-#define SIZE_GAP 4
-
 typedef enum {
-  MSG_ID_STATE = 0x53544154,
   MSG_ID_BATTERY = 0x42415454,
-  MSG_ID_CELLS = 0x43454C4C,
-  MSG_ID_PROTECTION = 0x50524F54,
   MSG_ID_GET = 0x47455420,
   MSG_ID_SET = 0x53455420,
   MSG_ID_COMMUNICATION = 0x434F4D4D
@@ -56,12 +51,11 @@ typedef enum {
 } Number_of_Thermistors;
 
 typedef enum {
-  State_Discharge = 0x53446964,
-  State_Charge = 0x53436861,
-  State_Idle = 0x5349646C,
-  State_Error = 0x53457272,
-} State;
-
+  Battery_Status_Discharge = 0x53446964,
+  Battery_Status_Charge = 0x53436861,
+  Battery_Status_Idle = 0x5349646C,
+  Battery_Status_Error = 0x53457272,
+} Battery_Status;
 typedef struct _Cells {
   Number_of_Cells noc;
   uint16_t voltage[MAX_CELLS_NUMBER];
@@ -75,43 +69,18 @@ typedef struct _Temperature {
 typedef enum { LOAD_not_detect = 0x4C4F6E64, LOAD_detect = 0x4C4F4144 } LOAD;
 
 typedef struct _Battery {
+  Battery_Status battery_status;
   uint16_t voltage;
-  uint16_t current;
+  int16_t current;
+  Cells cells;
   Temperature temperature;
   LOAD load;
 } Battery;
-
-typedef struct _Status {
-  uint8_t sys_status;
-  uint8_t cellbal_1;
-  uint8_t cellbal_2;
-  uint8_t cellbal_3;
-  uint8_t sys_ctrl_1;
-  uint8_t sys_ctrl_2;
-  uint8_t protect1;
-  uint8_t protect2;
-  uint8_t protect3;
-} Status;
-
-typedef enum {
-  Protection_not_activated = 0x50416374,
-  Protection_activated = 0x504E4163
-} Protection;
-
-typedef struct _Protection_Activation {
-  Protection uv;
-  Protection ov;
-  Protection scd;
-  Protection ocd;
-} Protection_Activation;
 
 typedef struct _MSG_TO_PC {
   MSG_ID id;
   union {
     Battery battery;
-    Status status;
-    Protection_Activation protection;
-    Cells cells;
   };
 } MSG_TO_PC;
 
