@@ -8,6 +8,8 @@
 static BQ769_Config *config;
 static Battery *battery;
 static uint8_t *cbals;
+uint16_t cell_min_v;
+uint8_t valltowri;
 
 static void set_battery_status(Battery_Status);
 static uint8_t read_register(uint8_t address, BQ769_Register register);
@@ -134,9 +136,7 @@ void read_sys_status() {
 
 void read_cells(bool communication) {
   if (battery->battery_status != Battery_Status_Charge) {
-    if (communication) {
-      continue;
-    } else {
+    if (!communication) {
       return;
     }
   }
@@ -184,16 +184,21 @@ void read_cells(bool communication) {
 }
 
 void read_current() {
-  battery.current = (read_register(BQ769200_ADDRESS, BQ769_REG_CC_HI) << 8) |
-                    read_register(BQ769200_ADDRESS, BQ769_REG_CC_LO);
-  if (msg->battery.current > 0x0008 &&
-      battery->battery_status != Battery_Status_Charge) {
-    set_battery_status(Battery_Status_Charge)
-  } else if (msg->battery.current < 0xfff8 &&
-             battery->battery_status != Battery_Status_Discharge) {
-    set_battery_status(Battery_Status_Discharge);
-  } else if (battery->battery_status != Battery_Status_Idle) {
-    set_battery_status(Battery_Status_Idle);
+  battery->current = (read_register(BQ769200_ADDRESS, BQ769_REG_CC_HI) << 8) |
+                     read_register(BQ769200_ADDRESS, BQ769_REG_CC_LO);
+
+  if (battery->current > 10) {
+    if (battery->battery_status != Battery_Status_Charge) {
+      set_battery_status(Battery_Status_Charge);
+    }
+  } else if (battery->current < -10) {
+    if (battery->battery_status != Battery_Status_Discharge) {
+      set_battery_status(Battery_Status_Discharge);
+    }
+  } else {
+    if (battery->battery_status != Battery_Status_Idle) {
+      set_battery_status(Battery_Status_Idle);
+    }
   }
 }
 
@@ -226,10 +231,10 @@ void read_load(bool communication) {
     return;
   }
   if (read_register(BQ769200_ADDRESS, BQ769_REG_SYS_CTRL1) && 0x80) {
-    msg->battery.load = LOAD_detect;
+    battery->load = LOAD_detect;
   } else {
-    msg->battery.load = LOAD_not_detect;
-    msg->battery.current = 0;
+    battery->load = LOAD_not_detect;
+    battery->current = 0;
   }
 }
 
@@ -241,50 +246,52 @@ void balancing_cells() {
   uint16_t c_bal = 0;
   uint16_t min_cell = battery->cells.voltage[0];
   for (uint8_t i = 1; i < battery->cells.noc; i++) {
-    if (min_cell < battery->cells.voltage[i]) {
+    if (min_cell > battery->cells.voltage[i]) {
       min_cell = battery->cells.voltage[i];
     }
-    /*
-    check iterator if cell value is more then 95,5mV and it will be 250 ADC
-    */
-    for (uint8_t i = 0; i < battery->cells.noc; i++) {
-      if ((battery->cells.voltage[i] - min_cell) < 250) {
-        // enable balancer on that cell
-        c_bal += (1 << i);
-      }
+  }
+  cell_min_v = min_cell;
+  /*
+  check iterator if cell value is more then 95,5mV and it will be 250 ADC
+  */
+  for (uint8_t i = 0; i < battery->cells.noc; i++) {
+    if ((battery->cells.voltage[i] - min_cell) > 200) {
+      // enable balancer on that cell
+      c_bal += (1 << i);
     }
-    if (c_bal == 0) {
+  }
+  if (c_bal == 0) {
 #if BQ76920
-      write_register(BQ769200_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
+    write_register(BQ769200_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
 #elif BQ76930
-      write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
-      write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
-#elif BQ76940
-      write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
-      write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
-      write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_3, 0x00);
-#endif
-      return;
-    }
-
-#if BQ76920
-    for (uint8_t i = 0; i < battery->cells.noc; i++) {
-      if ((c_bal & (1 << i)) == 1) {
-        cbals_value |= cbals[i];
-      }
-    }
-    write_register(BQ769200_ADDRESS, BQ769_REG_CELLBAL_1, cbals_value);
-#elif BQ76930
-
     write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
     write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
-// To DO
 #elif BQ76940
     write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
     write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
     write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_3, 0x00);
-// To DO
 #endif
     return;
   }
+
+#if BQ76920
+  for (uint8_t i = 0; i < battery->cells.noc; i++) {
+    if (c_bal & (1 << i)) {
+      cbals_value |= cbals[i];
+    }
+  }
+  valltowri = cbals_value;
+  write_register(BQ769200_ADDRESS, BQ769_REG_CELLBAL_1, cbals_value);
+#elif BQ76930
+
+  write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
+  write_register(BQ7693000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
+// To DO
+#elif BQ76940
+  write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_1, 0x00);
+  write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_2, 0x00);
+  write_register(BQ7694000_ADDRESS, BQ769_REG_CELLBAL_3, 0x00);
+// To DO
+#endif
+  return;
 }

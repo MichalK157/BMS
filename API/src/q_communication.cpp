@@ -22,10 +22,12 @@ void SerialReaderThread::run() {
 
     int bytesRead = serial->readData(buffer, sizeof(MSG_TO_PC));
     if (bytesRead > 0) {
+      /*
       for (int i = 0; i < sizeof(MSG_TO_PC); i++) {
         std::cout << std::hex << (int)buffer[i];
       }
       std::cout << std::endl;
+      */
       emit newData(buffer);
     } else {
       this->msleep(50);

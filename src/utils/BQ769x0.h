@@ -3,6 +3,7 @@
 #ifndef UTILS_BQ769X0_H_
 #define UTILS_BQ769X0_H_
 #include "../proto/protocol.h"
+#include "stdbool.h"
 #include "stdint.h"
 
 // Addresses of registers in the BQ769 circuit

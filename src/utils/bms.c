@@ -8,10 +8,11 @@
 #include "stm32f0xx_hal.h"
 #include "string.h"
 
+
+
 uint8_t bms(void) {
   extern UART_HandleTypeDef huart1;
   MSG_TO_PC *msg = (MSG_TO_PC *)malloc(sizeof(MSG_TO_PC));
-
   while (1) {
 
     read_sys_status();
@@ -28,6 +29,7 @@ uint8_t bms(void) {
       get_battery(&msg->battery);
       HAL_UART_Transmit(&huart1, (uint8_t *)msg, sizeof(MSG_TO_PC), 100);
     }
+    HAL_Delay(1000);
   }
   return 0;
 }

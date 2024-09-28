@@ -35,6 +35,7 @@ void Q_main_window::disconnect_bms() {
   if (buffer != NULL) {
     serialReaderThread->send(buffer);
   }
+  free(buffer);
 }
 
 void Q_main_window::charge() {
@@ -63,6 +64,7 @@ void Q_main_window::connect_bms() {
   if (buffer != NULL) {
     serialReaderThread->send(buffer);
   }
+  free(buffer);
 }
 
 void Q_main_window::getdate(const uint8_t *data) {
@@ -70,16 +72,8 @@ void Q_main_window::getdate(const uint8_t *data) {
   MSG_TO_PC *msg = buffer_serialization_to_pc_msg(data);
   if (msg != NULL) {
     switch (msg->id) {
-    case MSG_ID_CELLS: {
-      update_cells(ui, msg, logger);
-      break;
-    }
-    case MSG_ID_STATE: {
-      update_status(ui, msg, logger);
-      break;
-    }
     case MSG_ID_BATTERY: {
-      update_battery(ui, msg, logger);
+      update_battery(ui, &msg->battery, logger);
       break;
     }
     default: {
