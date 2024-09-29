@@ -92,6 +92,7 @@ void init_battery() {
   battery = (Battery *)malloc(sizeof(Battery));
   memset(battery, 0, sizeof(Battery));
   battery->battery_status = Battery_Status_Idle;
+  battery->temperature.nt = MAX_THERMISTORS_NUMBER;
 
 #if C3
   battery->cells.noc = Number_of_Cells_3;
@@ -124,6 +125,7 @@ void get_battery(Battery *_battery) {
   memcpy(_battery, battery, sizeof(Battery));
 }
 
+// To DO  !!!!
 void read_sys_status() {
   uint8_t stat = read_register(BQ769200_ADDRESS, BQ769_REG_SYS_STAT);
 
@@ -202,10 +204,7 @@ void read_current() {
   }
 }
 
-void read_voltage(bool communication) {
-  if (!communication) {
-    return;
-  }
+void read_voltage() {
   battery->voltage = (read_register(BQ769200_ADDRESS, BQ769_REG_BAT_HI) << 8) |
                      read_register(BQ769200_ADDRESS, BQ769_REG_BAT_LO);
 }
@@ -236,6 +235,25 @@ void read_load(bool communication) {
     battery->load = LOAD_not_detect;
     battery->current = 0;
   }
+}
+
+void read_temperature() {
+
+  battery->temperature.temperature[0] =
+      (read_register(BQ769200_ADDRESS, BQ769_REG_TS_HI) << 8) |
+      read_register(BQ769200_ADDRESS, BQ769_REG_TS1_LO);
+#if BQ76930
+  battery->temperature.temperature[1] =
+      (read_register(BQ769200_ADDRESS, BQ769_REG_TS2_HI) << 8) |
+      read_register(BQ769200_ADDRESS, BQ769_REG_TS2_LO);
+#elif BQ76940
+  battery->temperature.temperature[1] =
+      (read_register(BQ769200_ADDRESS, BQ769_REG_TS2_HI) << 8) |
+      read_register(BQ769200_ADDRESS, BQ769_REG_TS2_LO);
+  battery->temperature.temperature[2] =
+      (read_register(BQ769200_ADDRESS, BQ769_REG_TS3_HI) << 8) |
+      read_register(BQ769200_ADDRESS, BQ769_REG_TS3_LO);
+#endif
 }
 
 void balancing_cells() {

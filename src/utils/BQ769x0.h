@@ -198,7 +198,8 @@ void get_battery(Battery *_battery);
 void read_sys_status();
 void read_cells(bool communication);
 void read_current();
-void read_voltage(bool communication);
+void read_voltage();
 void read_load(bool communication);
+void read_temperature();
 void balancing_cells();
 #endif /* UTILS_BQ769X0_H_ */
