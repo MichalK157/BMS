@@ -8,8 +8,6 @@
 #include "stm32f0xx_hal.h"
 #include "string.h"
 
-
-
 uint8_t bms(void) {
   extern UART_HandleTypeDef huart1;
   MSG_TO_PC *msg = (MSG_TO_PC *)malloc(sizeof(MSG_TO_PC));

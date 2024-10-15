@@ -578,7 +578,7 @@
        <item>
         <widget class="QComboBox" name="comboBox_Resistance">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <item>
           <property name="text">
@@ -598,6 +598,11 @@
          <item>
           <property name="text">
            <string>0.0025</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0.001</string>
           </property>
          </item>
         </widget>

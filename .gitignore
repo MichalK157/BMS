@@ -56,7 +56,7 @@ API/src/test
 API/proto/*
 API/build/*
 *.launch
-Debug/*
+*/Debug/*
 .vscode/*
 .settings/*
 src/proto/testbed.code-workspace 

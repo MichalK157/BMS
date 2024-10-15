@@ -106,22 +106,21 @@ void Logger::log(const Battery *msg, Ui_BMS *ui) {
 static std::string trim_value(const int16_t value, const double percale,
                               const uint16_t divider, const double offset,
                               const std::string suffix) {
-  std::array<char, 5> str;
+  std::array<char, 6> str;
 
   auto [prt, ex] =
       std::to_chars(str.data(), str.data() + str.size(),
                     (double)(((value * percale) / divider) + offset),
                     std::chars_format::fixed, 2);
 
+  *prt = '\0';
   std::string sstr(str.data());
   sstr.append(suffix);
   return sstr;
 }
 
 static double get_prescaler(QComboBox *comboBox_Resistance) {
-  double a = -168.8;
-  double b = 2.535;
   int index = comboBox_Resistance->currentIndex();
   double value = comboBox_Resistance->itemText(index).toDouble();
-  return a * value + b;
+  return 0.01165 / value;
 }
