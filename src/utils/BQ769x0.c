@@ -2,8 +2,14 @@
 #include "BQ769x0.h"
 #include "main.h"
 #include "stdlib.h"
-#include "stm32f0xx_hal.h"
 #include "string.h"
+
+#if STM32F031x6
+#include "stm32f0xx_hal.h"
+
+#elif STM32L432xx
+#include "stm32l4xx_hal.h"
+#endif
 
 static BQ769_Config* config;
 static Battery* battery;

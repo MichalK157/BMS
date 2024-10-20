@@ -11,24 +11,25 @@
 
 using namespace Ui;
 
-class Q_main_window : public QMainWindow {
-  Q_OBJECT
+class Q_main_window : public QMainWindow
+{
+    Q_OBJECT
 
-public:
-  explicit Q_main_window(QWidget *parent = nullptr);
-  ~Q_main_window();
+  public:
+    explicit Q_main_window(QWidget* parent = nullptr);
+    ~Q_main_window();
 
-private:
-  Ui_BMS *ui;
-  Logger *logger;
-  bool charge_press;
-  SerialReaderThread *serialReaderThread;
-  void connect_bms();
-  void disconnect_bms();
-  void charge();
+  private:
+    Ui_BMS* ui;
+    Logger* logger;
+    bool charge_press;
+    SerialReaderThread* serialReaderThread;
+    void connect_bms();
+    void disconnect_bms();
+    void charge();
 
-private slots:
-  void getdate(const uint8_t *data);
+  private slots:
+    void getdate(const uint8_t* data);
 };
 
 #endif

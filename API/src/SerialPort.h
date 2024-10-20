@@ -1,28 +1,29 @@
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
 
+#include <cstdint>
 #include <string>
 #include <termios.h>
-#include <cstdint>
 
-class SerialPort {
-public:
-  SerialPort(const std::string &portName, int baudRate);
-  ~SerialPort();
+class SerialPort
+{
+  public:
+    SerialPort(const std::string& portName, int baudRate);
+    ~SerialPort();
 
-  bool open();
-  void close();
-  int readData(uint8_t *buffer, size_t size);
-  bool writeData(const uint8_t *buffer, size_t size);
-  bool isOpen() const;
+    bool open();
+    void close();
+    int readData(uint8_t* buffer, size_t size);
+    bool writeData(const uint8_t* buffer, size_t size);
+    bool isOpen() const;
 
-private:
-  uint8_t tx_buffer[255];
-  std::string portName;
-  int baudRate;
-  int fileDescriptor;
-  bool openFlag;
-  struct termios tty;
+  private:
+    uint8_t tx_buffer[255];
+    std::string portName;
+    int baudRate;
+    int fileDescriptor;
+    bool openFlag;
+    struct termios tty;
 };
 
 #endif // SERIALPORT_H

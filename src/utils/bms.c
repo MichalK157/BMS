@@ -5,36 +5,46 @@
 #include "com.h"
 #include "main.h"
 #include "stdlib.h"
-#include "stm32f0xx_hal.h"
 #include "string.h"
 
-uint8_t bms(void) {
-  extern UART_HandleTypeDef huart1;
-  MSG_TO_PC *msg = (MSG_TO_PC *)malloc(sizeof(MSG_TO_PC));
-  while (1) {
+#if STM32F031x6
+#include "stm32f0xx_hal.h"
 
-    read_sys_status();
-    read_current();
-    read_voltage(communication_is_enable());
-    read_load(communication_is_enable());
-    read_cells(communication_is_enable());
-    balancing_cells();
+#elif STM32L432xx
+#include "stm32l4xx_hal.h"
+#endif
 
-    if (communication_is_enable()) {
+uint8_t bms(void)
+{
+    extern UART_HandleTypeDef huart1;
+    MSG_TO_PC* msg = (MSG_TO_PC*)malloc(sizeof(MSG_TO_PC));
+    while(1)
+    {
 
-      memset(msg, 0, sizeof(MSG_TO_PC));
-      msg->id = MSG_ID_BATTERY;
-      get_battery(&msg->battery);
-      HAL_UART_Transmit(&huart1, (uint8_t *)msg, sizeof(MSG_TO_PC), 100);
+        read_sys_status();
+        read_current();
+        read_voltage(communication_is_enable());
+        read_load(communication_is_enable());
+        read_cells(communication_is_enable());
+        balancing_cells();
+
+        if(communication_is_enable())
+        {
+
+            memset(msg, 0, sizeof(MSG_TO_PC));
+            msg->id = MSG_ID_BATTERY;
+            get_battery(&msg->battery);
+            HAL_UART_Transmit(&huart1, (uint8_t*)msg, sizeof(MSG_TO_PC), 100);
+        }
+        HAL_Delay(1000);
     }
-    HAL_Delay(1000);
-  }
-  return 0;
+    return 0;
 }
 
-void bms_init(void) {
+void bms_init(void)
+{
 
-  set_configuration(BQ769200_ADDRESS);
-  init_battery();
-  startUart();
+    set_configuration(BQ769200_ADDRESS);
+    init_battery();
+    startUart();
 }
