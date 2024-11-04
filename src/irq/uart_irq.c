@@ -1,7 +1,6 @@
 
 #include "uart_irq.h"
 #include "../proto/protocol.h"
-#include "../utils/com.h"
 #include "string.h"
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)

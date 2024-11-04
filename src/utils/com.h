@@ -14,6 +14,12 @@
 
 #define MAX_CMD_COUNT 5
 
+#if STM32F031x6
+#include "stm32f0xx_hal.h"
+#elif STM32L432xx
+#include "stm32l4xx_hal.h"
+#endif
+
 typedef struct _CMD
 {
     bool empty;
@@ -27,5 +33,5 @@ uint8_t get_cmd_counter();
 bool cmd_is_empty();
 MSG_TO_BMS* get_cmd();
 bool communication_is_enable(void);
-
+UART_HandleTypeDef* get_handler(void);
 #endif /* UTILS_COM_H_ */

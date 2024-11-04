@@ -40,7 +40,7 @@ void write_register(uint8_t address, BQ769_Register reg, uint8_t value)
 void set_configuration(uint8_t address)
 {
     HAL_GPIO_WritePin(ALTER_GPIO_Port, ALTER_Pin, GPIO_PIN_RESET);
-    HAL_Delay(5);
+    HAL_Delay(1);
     write_register(address, BQ769_REG_SYS_STAT, 0xBF);
     HAL_Delay(1);
     write_register(address, BQ769_REG_CELLBAL_1,

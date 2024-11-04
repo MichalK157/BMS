@@ -3,13 +3,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-#if STM32F031x6
-#include "stm32f0xx_hal.h"
-
-#elif STM32L432xx
-#include "stm32l4xx_hal.h"
-#endif
-
+UART_HandleTypeDef* huart;
 uint8_t rxdata[128];
 
 static CMD* cmd;
@@ -18,10 +12,11 @@ volatile bool communication;
 // to do : remove convert use projecting
 void* convert(uint8_t* buffer, size_t size);
 void add_cmd(const MSG_TO_BMS* msg);
+void config_handler();
 
 void startUart(void)
 {
-    extern UART_HandleTypeDef huart1;
+    config_handler();
     memset(rxdata, 0, sizeof(MSG_TO_BMS));
 
     cmd = (CMD*)malloc(sizeof(cmd));
@@ -31,7 +26,7 @@ void startUart(void)
 
     communication = false;
 
-    HAL_UART_Receive_IT(&huart1, rxdata, sizeof(MSG_TO_BMS));
+    HAL_UART_Receive_IT(huart, rxdata, sizeof(MSG_TO_BMS));
 }
 
 void serialized_msg(uint8_t* data)
@@ -146,4 +141,19 @@ void add_cmd(const MSG_TO_BMS* msg)
 bool communication_is_enable(void)
 {
     return communication;
+}
+UART_HandleTypeDef* get_handler(void)
+{
+    return huart;
+}
+void config_handler()
+{
+#ifdef STM32F031x6
+    extern UART_HandleTypeDef huart1;
+    huart = &huart1;
+#endif
+#ifdef STM32L432xx
+    extern UART_HandleTypeDef huart2;
+    huart = &huart2;
+#endif
 }
