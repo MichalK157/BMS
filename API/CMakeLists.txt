@@ -17,7 +17,7 @@ set(UI_FILES
 )
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
 qt5_wrap_cpp(MOC_SOURCES q_main_window.h q_communication.h)
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 
