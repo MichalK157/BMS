@@ -8,6 +8,8 @@ Q_main_window::Q_main_window(QWidget* parent) : QMainWindow(parent)
     serialReaderThread = new SerialReaderThread();
     logger = new Logger("log.csv");
     logger->init_logger();
+    ui = new Ui_BMS();
+    assert(ui != nullptr);
     ui->setupUi(this);
     charge_press = false;
     connect(serialReaderThread, &SerialReaderThread::newData, this, &Q_main_window::getdate);
