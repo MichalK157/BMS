@@ -58,8 +58,10 @@ API/build/*
 *.launch
 */Debug/*
 .vscode/*
-.settings/*
+*/.settings/*
 src/proto/testbed.code-workspace 
 *.csv
 
 BMS.code-workspace
+
+.metadata/*

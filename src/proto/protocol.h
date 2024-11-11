@@ -47,14 +47,16 @@ extern "C"
         Number_of_Cells_12 = 12,
         Number_of_Cells_13 = 13,
         Number_of_Cells_14 = 14,
-        Number_of_Cells_15 = 15
+        Number_of_Cells_15 = 15,
+		Number_of_Cells_Error = 0xffffffff
     } Number_of_Cells;
 
     typedef enum
     {
         Number_of_Thermistors_1 = 1,
         Number_of_Thermistors_2 = 2,
-        Number_of_Thermistors_3 = 3
+        Number_of_Thermistors_3 = 3,
+		Number_of_Thermistors_Error = 0xffffffff
     } Number_of_Thermistors;
 
     typedef enum
