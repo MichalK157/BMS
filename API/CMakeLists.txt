@@ -68,7 +68,6 @@ add_custom_command(TARGET bms_api
 	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:bms_api> ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-
 project(TEST)
 
 set(HEADERS_TEST
@@ -87,5 +86,5 @@ add_executable(test
 
 add_custom_command(TARGET test
        	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test> ${CMAKE_CURRENT_SOURCE_DIR}/src
+	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:test> ${CMAKE_CURRENT_SOURCE_DIR}
 )
